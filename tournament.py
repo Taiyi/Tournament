@@ -109,17 +109,17 @@ def swissPairings():
     db = connect()
     cursor = db.cursor()
     cursor.execute("SELECT id,name,wins FROM Standings ORDER BY wins DESC;")
-    rows = cursor.fetchall()
+    count = cursor.fetchall()
     db.close()
     i=0
     pairings = []
-    while i < len(rows):
-        playerAid = rows[i][0]
-        playerAname = rows[i][1]
-        playerBid = rows[i+1][0]
-        playerBname = rows[i+1][1]
-        pairings.append((playerAid,playerAname,playerBid,playerBname))
-        i=i+2
+    while i < len(count):
+        id1 = rows[i][0]
+        name1 = rows[i][1]
+        id2 = rows[i+1][0]
+        name2 = rows[i+1][1]
+        pairings.append((id1,name1,id2,name2))
+        i += 2
 
     return pairings
 
