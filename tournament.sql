@@ -6,34 +6,37 @@
 -- You can write comments in this file by starting them with two dashes, like
 -- these lines here.
 
+\c vagrantDROP DATABASE IF EXISTS tournament;
+CREATE DATABASE tournament;
+\c tournament
+
 -- Players Table
-CREATE TABLE Players (
-	id SERIAL primary key,
+CREATE TABLE players (
+	id SERIAL PRIMARY KEY,
 	name varchar(255)
 );
 
-CREATE TABLE Matches (
-	id SERIAL primary key,
+CREATE TABLE matches (
+	id SERIAL PRIMARY KEY,
 	player1 int REFERENCES Players(id),
-	player2 int REFERENCES Players(id),
-	result int
+	player2 int REFERENCES Players(id)
 );
 
-CREATE View Wins AS
-	SELECT Players.id, COUNT(Matches.player2) AS n 
-	FROM Players
-	LEFT JOIN (SELECT * FROM Matches WHERE result>0) as Matches
-	ON Players.id = Matches.player1
-	GROUP BY Players.id;
+CREATE View wins AS
+	SELECT players.id, COUNT(matches.id) AS n
+	FROM players
+	LEFT JOIN (SELECT * FROM matches WHERE player1=players.id) as matches
+	ON players.id = matches.player1
+	GROUP BY players.id;
 	
-CREATE VIEW Count AS
-	SELECT Players.id, Count(Matches.player2) AS n 
-	FROM Players
-	LEFT JOIN Matches
-	ON Players.id = Matches.player1
-	GROUP BY Players.id;
+CREATE VIEW count AS
+	SELECT players.id, Count(matches.id) AS n 
+	FROM players
+	LEFT JOIN matches
+	ON players.id = matches.player1 OR players.id = matches.player2
+	GROUP BY players.id;
 
-CREATE VIEW Standings AS 
-	SELECT Players.id,Players.name,Wins.n as wins,Count.n as matches 
-	FROM Players, Count, Wins
-	WHERE Players.id = Wins.id and Wins.id = Count.id;
+CREATE VIEW standings AS 
+	SELECT players.id,players.name,wins.n as wins,count.n as matches 
+	FROM players, count, wins
+	WHERE players.id = wins.id and wins.id = count.id;

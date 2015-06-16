@@ -8,7 +8,11 @@ import psycopg2
 
 def connect():
     """Connect to the PostgreSQL database.  Returns a database connection."""
-    return psycopg2.connect("dbname=tournament")
+    try:
+       conn = psycopg2.connect("dbname=tournament")
+       return conn
+    except psycopg2.Error as e:
+       print e
 
 
 def deleteMatches():
@@ -85,8 +89,7 @@ def reportMatch(winner, loser):
     """
     db = connect()
     cursor = db.cursor()
-    cursor.execute("INSERT INTO Matches (player1,player2,result) VALUES (%s,%s,1)",(winner,loser))
-    cursor.execute("INSERT INTO Matches (player1,player2,result) VALUES (%s,%s,0)",(loser,winner))
+    cursor.execute("INSERT INTO Matches (player1,player2) VALUES (%s,%s)",(winner,loser))
     db.commit()
     db.close();
  
@@ -113,13 +116,14 @@ def swissPairings():
     db.close()
     i=0
     pairings = []
-    while i < len(count):
-        id1 = rows[i][0]
-        name1 = rows[i][1]
-        id2 = rows[i+1][0]
-        name2 = rows[i+1][1]
-        pairings.append((id1,name1,id2,name2))
-        i += 2
+    if count % 2 == 0
+        while i < len(count):
+            id1 = count[i][0]
+            name1 = count[i][1]
+            id2 = count[i+1][0]
+            name2 = count[i+1][1]
+            pairings.append((id1,name1,id2,name2))
+            i += 2
 
     return pairings
 

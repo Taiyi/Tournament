@@ -15,10 +15,22 @@ tournament.sql
 -Creates table and view structure
 
 test_tournament.py
--Creates the html file using a list of movie objects
+-Creates code to test project
+
+
+============================================================
+Libraries
+============================================================
+Tournament requires the following python libraries to work
+
+-psycopg2
 
 
 ============================================================
 Instructions
 ============================================================
-Run tournament_test.py
+-Ssh into vagrant and move to correct directory
+
+-Open nosql and initialize tournament database
+
+-Run tournament_test.py
