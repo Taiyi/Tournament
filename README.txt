@@ -25,12 +25,15 @@ Tournament requires the following python libraries to work
 
 -psycopg2
 
+Additional requirements
+
+-nosql
 
 ============================================================
 Instructions
 ============================================================
 -Ssh into vagrant and move to correct directory
 
--Open nosql and initialize tournament database
+-Open psql and initialize tournament database by typing "\i tournament.sql"
 
--Run tournament_test.py
+-Run tournament_test.py by typing "python tournament_test.py"

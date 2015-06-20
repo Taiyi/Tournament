@@ -14,32 +14,33 @@ def connect():
     except psycopg2.Error as e:
        print e
 
+def get(command):
+    """Creates cursor, executes command, commints changes"""
+    db = connect()
+    cursor = db.cursor()
+    cursor.execute(command)
+    db.commit()
+    try:
+        rows = cursor.fetchall()
+    except psycopg2.ProgrammingError as e:
+        rows = False
+    db.close()
+    if rows:
+        return rows;
 
 def deleteMatches():
     """Remove all the match records from the database."""
-    db = connect()
-    cursor = db.cursor()
-    cursor.execute("DELETE FROM Matches")
-    db.commit()
-    db.close();
+    get("DELETE FROM Matches");
 
 
 def deletePlayers():
     """Remove all the player records from the database."""
-    db = connect()
-    cursor = db.cursor()
-    cursor.execute("DELETE FROM Players")
-    db.commit()
-    db.close();
+    get("DELETE FROM Players");
 
 
 def countPlayers():
     """Returns the number of players currently registered."""
-    db = connect()
-    cursor = db.cursor()
-    cursor.execute("SELECT count(id) FROM Players;")
-    rows = cursor.fetchall()
-    db.close()
+    rows = get("SELECT count(id) FROM Players;")
     return rows[0][0]
 
 
@@ -72,11 +73,7 @@ def playerStandings():
         wins: the number of matches the player has won
         matches: the number of matches the player has played
     """
-    db = connect()
-    cursor = db.cursor()
-    cursor.execute("SELECT id,name,wins,matches FROM Standings ORDER BY wins DESC;")
-    rows = cursor.fetchall()
-    db.close()
+    rows = get("SELECT id,name,wins,matches FROM Standings ORDER BY wins DESC;")
     return rows
 
 
@@ -109,22 +106,16 @@ def swissPairings():
         id2: the second player's unique id
         name2: the second player's name
     """
-    db = connect()
-    cursor = db.cursor()
-    cursor.execute("SELECT id,name,wins FROM Standings ORDER BY wins DESC;")
-    count = cursor.fetchall()
-    db.close()
+    count = playerStandings()
     i=0
     pairings = []
-    if count % 2 == 0
-        while i < len(count):
-            id1 = count[i][0]
-            name1 = count[i][1]
-            id2 = count[i+1][0]
-            name2 = count[i+1][1]
-            pairings.append((id1,name1,id2,name2))
-            i += 2
-
+    while i < len(count):
+        id1 = count[i][0]
+        name1 = count[i][1]
+        id2 = count[i+1][0]
+        name2 = count[i+1][1]
+        pairings.append((id1,name1,id2,name2))
+        i += 2
     return pairings
 
 

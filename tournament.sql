@@ -6,9 +6,10 @@
 -- You can write comments in this file by starting them with two dashes, like
 -- these lines here.
 
-\c vagrantDROP DATABASE IF EXISTS tournament;
+\c vagrant;
+DROP DATABASE IF EXISTS tournament;
 CREATE DATABASE tournament;
-\c tournament
+\c tournament;
 
 -- Players Table
 CREATE TABLE players (
@@ -22,10 +23,10 @@ CREATE TABLE matches (
 	player2 int REFERENCES Players(id)
 );
 
-CREATE View wins AS
+CREATE VIEW wins AS
 	SELECT players.id, COUNT(matches.id) AS n
 	FROM players
-	LEFT JOIN (SELECT * FROM matches WHERE player1=players.id) as matches
+	LEFT JOIN (SELECT * FROM matches) as matches
 	ON players.id = matches.player1
 	GROUP BY players.id;
 	
