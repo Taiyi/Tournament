@@ -34,6 +34,10 @@ Instructions
 ============================================================
 -Ssh into vagrant and move to correct directory
 
--Open psql and initialize tournament database by typing "\i tournament.sql"
+-Open psql by typing "psql"
+
+-Initialize tournament database by typing "\i tournament.sql"
+
+-Exit psql by typing "CTRL+D"
 
 -Run tournament_test.py by typing "python tournament_test.py"
