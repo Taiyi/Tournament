@@ -26,16 +26,16 @@ def get(command):
         rows = False
     db.close()
     if rows:
-        return rows;
+        return rows
 
 def deleteMatches():
     """Remove all the match records from the database."""
-    get("DELETE FROM Matches");
+    get("DELETE FROM Matches")
 
 
 def deletePlayers():
     """Remove all the player records from the database."""
-    get("DELETE FROM Players");
+    get("DELETE FROM Players")
 
 
 def countPlayers():
@@ -57,7 +57,7 @@ def registerPlayer(name):
     cursor = db.cursor()
     cursor.execute("INSERT INTO Players (name) VALUES (%s)",(name,))
     db.commit()
-    db.close();
+    db.close()
 
 
 def playerStandings():
@@ -86,9 +86,9 @@ def reportMatch(winner, loser):
     """
     db = connect()
     cursor = db.cursor()
-    cursor.execute("INSERT INTO Matches (player1,player2) VALUES (%s,%s)",(winner,loser))
+    cursor.execute("INSERT INTO Matches (winner,loser) VALUES (%s,%s)",(winner,loser))
     db.commit()
-    db.close();
+    db.close()
  
  
 def swissPairings():
